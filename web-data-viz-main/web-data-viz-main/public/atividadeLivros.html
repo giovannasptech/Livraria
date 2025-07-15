@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>GiGi's Livraria </title>
+   <style>
+    body { font-family: Arial; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 5px; }
+  </style>
+ 
+</head>
+<body>
+  <h2>Cadastro de Livros</h2>
+
+  Título: <input type="text" id="ipt_titulo">
+  Autor: <input type="text" id="ipt_autor">
+  Preço de Compra: <input type="number" id="ipt_precoCompra">
+  Quantidade em Estoque: <input type="number" id="ipt_estoque">
+  Gênero:
+    <select id="ipt_genero">
+      <option value="1">Romance</option>
+      <option value="2">Poesia</option>
+      <option value="3">Poesia</option>
+      <option value="4">Fantasia</option>
+    </select>
+  </label>
+
+  <button onclick="cadastrarLivro()">Cadastrar Livro</button>
+
+  <h3>Livros Cadastrados</h3>
+  <table id="tabelaLivros">
+    <tr>
+      <th>Título</th>
+      <th>Autor</th>
+      <th>Preço Compra</th>
+      <th>Preço Venda</th>
+      <th>Estoque</th>
+  </table>
+
+  <script>
+   
+    var titulos = [];
+    var autores = [];
+    var precosCompra = [];
+    var precosVenda = [];
+    var estoques = [];
+    var generos = [];
+
+    function cadastrarLivro() {
+      var titulo = ipt_titulo.value;
+      var autor = ipt_autor.value;
+      var precoCompra = ipt_precoCompra.value;
+      var estoque = ipt_estoque.value;
+      var genero = ipt_genero.value;
+
+      
+      var letras = autor.split("");
+      var autorValido = true;
+
+      for (let i = 0; i < letras.length; i++) {
+        var letra = letras[i];
+        var ehLetra = (letra >= 'A' && letra <= 'Z') ||
+                        (letra >= 'a' && letra <= 'z') ||
+                        letra == ' ';
+        if (!ehLetra) {
+          autorValido = false;
+        }
+      }
+
+      if (autorValido == false) {
+        alert("O nome do autor não pode ter números ou símbolos.");
+      } else {
+       
+        var precoVenda = precoCompra;
+
+        if (precoCompra >= 100 && (genero == "horror" || genero == "romance")) {
+          precoVenda = precoCompra * 1.225;
+        }
+
+        if (precoCompra <= 50 && (genero == "poesia" || genero == "horror")) {
+          precoVenda = precoCompra * 1.25;
+        }
+
+        if (precoCompra > 50 && precoCompra < 100 && genero == "fantasia") {
+          precoVenda = precoCompra * 1.275;
+        }
+
+    
+        titulos.push(titulo);
+        autores.push(autor);
+        precosCompra.push(precoCompra);
+        precosVenda.push(precoVenda);
+        estoques.push(estoque);
+        generos.push(genero);
+
+        var tabela =tabelaLivros;
+        tabela.innerHTML = `
+          <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Preço Compra</th>
+            <th>Preço Venda</th>
+            <th>Estoque</th>
+            <th>Gênero</th>
+          </tr>
+        `;
+
+        for (let i = 0; i < titulos.length; i++) {
+          var linha = tabela.insertRow();
+          linha.innerHTML = `
+            <td>${titulos[i]}</td>
+            <td>${autores[i]}</td>
+            <td>R$ ${precosCompra[i]}</td>
+            <td>R$ ${precosVenda[i]}</td>
+            <td>${estoques[i]}</td>
+            <td>${generos[i]}</td>
+          `;
+        }
+
+     
+      titulo.value = "";
+      autor.value = "";
+      precoCompra.value = "";
+      estoque.value = "";
+      genero.selectedIndex = 0;
+      }
+    }
+
+ fetch("/usuarios/cadastarLivro", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      generoServer: ipt_genero.value
+    }),
+  })
+  .then(function (resposta) {
+    console.log("resposta: ", resposta);
+  })
+  .catch(function (error) {
+    console.log("Erro ao enviar os dados: ", error);
+    alert("Erro ao enviar os dados.");
+  });
+
+ 
+
+
+
+   
+   
+ 
+
+    
+   
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiGi's Livraria</title>
+</head>
+<body>
+    <h1> Cadastro da Livraria da GiGi</h1>
+    <h2> Nome do livro:</h2> <input type="text" id="NomeLivro"> <h2> Autor do livro: </h2> <input type="text" id="AutorLivro"> <br>
+    <h2> Preço de Compra do Livro:</h2><input type="number" id="CompraLivro"> <h2> Preço de Venda do Livro:</h2><input type="number" id="VendaLivro">
+    <h2>Quatidade em estoque:</h2> <input type="number" id="EstoqueLivro"> <h2>Gênero do Livro</h2> <input type="text" id="GeneroLivro">
+    <button onclick="cadastrar()">Cadastrar livro</button>
+    <div id="mensagem"></div>
+    
+</body>
+</html>
+<script>
+    function cadastrar() {
+        NomeLivro.value="";
+        NomeAutor.value="";
+        CompraLivro.value="";
+        VendaLivro.value="";
+        EstoqueLivro.vaue="";
+        GeneroLivro.value= "";
+        vt_nome = [];
+        vt_autor= [];
+        vt_compra = [];
+        vt_venda = [];
+        vt_estoque = [];
+        vt_genero = [];
+        for (let i = 0; i < vt_autor.length; i++) {
+      if (vt_autor[i].nome == "*" ) {
+        mensagem.innerHTML = "Não é permitido caractéres especiais."
+       
+        
+      } else {
+        mensagem.innerHTML = "Cadastrado."
+      }
+    }
+
+    if (NomeLivro.value != "" && EstoqueLivro.value != "" && AutorLivro.value !="" && GeneroLivro.value !="") {
+      var existeNaLista = false;
+
+      for (var i = 0; i < vt_nome.length; i++) {
+        if (NomeLivro.value == vt_nome[i]) {
+          existeNaLista = true;
+          mensagem.innerHTML= "Cadastrado!"
+          break;
+        }
+      }
+    }
+    
+
+      if(CompraLivro.value > 50 && CompraLivro.value < 100 && GeneroLivro.value == "fantasia"){
+        VendaLivro = Number(VendaLivro.value * 0.275)
+
+      }
+
+      if(CompraLivro.value <= 50 && GeneroLivro.value == "poesia" && GeneroLivro.value == "horror"){
+        VendaLivro = Number(VendaLivro.value * 0.25)
+
+      }
+
+
+
+      if (existeNaLista) {
+        mensagem.innerHTML = `O livro já está no estoque!`;
+      } else {
+        vt_nome.push(NomeLivro.value); 
+        vt_autor.push(AutorLivro.value); 
+        vt_compra.push(CompraLivro.value); 
+        vt_venda.push(VendaLivro.value); 
+        vt_estoque.push(EstoqueLivro.value); 
+        vt_genero.push(GeneroLivro.value); 
+      mensagem.innerHTML =
+        ` Cadastramos o ${NomeLivro.value} com o autor ${AutorLivro.value} com o preço de compra ${CompraLivro.value} e o 
+        preço de venda ${VendaLivro.value} com o estoque ${EstoqueLivro.value} do Gênero ${GeneroLivro.value} no estoque!`;
+      }
+    
+    }
+    
+        
+    
+</script>
